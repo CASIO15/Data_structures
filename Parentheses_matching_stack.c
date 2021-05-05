@@ -39,7 +39,7 @@ void push(char n)
         } else {
             q->next = top;
             top = q;
-            *(top->data) = n;
+            *(q->data) = n;
             *(++q->data) = '\0';
         }
     } else
@@ -67,7 +67,7 @@ char pop(void)
 
     if (empty())
         ;
-    x = *(top->data);
+    x = *(--top->data);
     new_top = top->next;
     free((Stack *) top);
     top = new_top;
@@ -77,15 +77,21 @@ char pop(void)
 int validate(void)
 {
     Stack *q=alloc();
+    char x;
 
     puts("Enter a string: ");
     fgets(q->data, 100, stdin);
 
     while (*(q->data)) {
-        if (*(q->data) == '(')
+        if (*(q->data) == '(' || *(q->data) == '[' || *(q->data) =='{')
             push(*(q->data));
-        if (*(q->data) == ')')
-            pop();
+        if (*(q->data) == ')' || *(q->data) == ']' || *(q->data) =='}') {
+            if (empty())
+                return FALSE;
+            x = pop();
+            if (x > *(q->data) || *(q->data)-x > 2)
+                return FALSE;
+        }
         (q->data)++;
     }
     return (empty()) ? TRUE : FALSE;
