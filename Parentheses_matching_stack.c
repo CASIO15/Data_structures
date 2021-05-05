@@ -3,7 +3,6 @@
 #include "stdio.h"
 #include "stdlib.h"
 
-
 typedef struct Node {
     char *data;
     struct Node *next;
@@ -23,7 +22,7 @@ int validate(void);
 Stack *alloc(void)
 {
     Stack *p = (Stack *)malloc(sizeof(Stack));
-    p->data = (char *)malloc(sizeof(char)*1000);
+    p->data = (char *)malloc(sizeof(char)*100);
     return p;
 }
 
@@ -77,25 +76,23 @@ char pop(void)
 
 int validate(void)
 {
-    int cnt=0;
     Stack *q=alloc();
 
     puts("Enter a string: ");
-    fgets(q->data, 1000, stdin);
+    fgets(q->data, 100, stdin);
 
     while (*(q->data)) {
         if (*(q->data) == '(')
-            push(*(q->data)), cnt++;
+            push(*(q->data));
         if (*(q->data) == ')')
-            cnt--, pop();
+            pop();
         (q->data)++;
     }
-    return (cnt == 0) ? TRUE : FALSE;
+    return (empty()) ? TRUE : FALSE;
 }
 
 int main(void)
 {
     (validate() == TRUE) ? puts("Parentheses are balanced") : puts("Parentheses are not balanced");
-
     return 0;
 }
