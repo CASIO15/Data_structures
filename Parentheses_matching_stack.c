@@ -34,13 +34,13 @@ void push(char n)
         if (top == NULL) {
             top = q;
             *(q->data) = n;
-            q->data[1] = '\0';
+            *(++q->data) = '\0';
             q->next = NULL;
         } else {
             q->next = top;
             top = q;
             *(top->data) = n;
-            q->data[1] = '\0';
+            *(++q->data) = '\0';
         }
     } else
         printf("Stack overflow !\n");
