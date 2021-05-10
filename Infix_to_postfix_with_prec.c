@@ -2,7 +2,7 @@
 #include "stdlib.h"
 #include "string.h"
 
-/* Basic conversion between infix to postfix */
+/* Basic conversion between infix to postfix including precedence */
 
 typedef struct Node {
     char *data;
