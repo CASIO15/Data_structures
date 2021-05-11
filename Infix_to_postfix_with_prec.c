@@ -57,7 +57,7 @@ char stackTop(void)
     else
         return -1;
 }
-
+// Precedence outside the brackets
 int pre(char c)
 {
     if (c == '+' || c == '-')
@@ -68,6 +68,7 @@ int pre(char c)
         return 3;
 }
 
+// Precedence of operators within the brackets (greater than those outside the brackets).
 int pre_in(char c)
 {
     if (c == '+' || c == '-')
@@ -105,7 +106,6 @@ int empty(void)
     return FALSE;
 }
 
-
 char pop(void)
 {
     Stack *new_top;
@@ -135,14 +135,23 @@ char *parseToPost(const char *s)
         else if (!isOperand(s[i]))
             postfix[j++] = s[i];
         else {
+            /*If one of the bit field flags is set (i.e equal to 1)
+             * enter this branch, if the close flag is set && the precedence of the operator within the brackets, is greater
+             * than the one outside of it, pop it in to the string, and set the close flags to 0.
+             * else push it into the stack.
+             * */
             if (f.open || f.close) {
                 if (f.close && (pre_in(stackTop()) >= pre(s[i]))) {
                     while (!empty())
                         postfix[j++] = pop();
                     push(s[i]);
-                    f.close = 0;
+                    f.close = f.open = 0;
                 } else
                     push(s[i]);
+                /*
+                 * If the operator is not inside the brackets, check the precedence and act as the program that we wrote 
+                 * earlier (without the precedence), however, we also need to set the flags to zero.
+                 * */
             } else {
                 if (pre(s[i]) >= pre(stackTop()))
                     push(s[i]);
