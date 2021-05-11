@@ -9,9 +9,12 @@ typedef struct Node {
     struct Node *next;
 } Stack;
 
+/*
+ * Bit field, setting the width of the attributes to 1 (1 bits long, we only need to able to represent 0 and 1)
+*/
 typedef struct flag {
-     int open: 8;
-     int close: 8;
+     int open: 1;
+     int close: 1;
 } FLAGS;
 
 enum {FALSE, TRUE};
@@ -149,7 +152,7 @@ char *parseToPost(const char *s)
                 } else
                     push(s[i]);
                 /*
-                 * If the operator is not inside the brackets, check the precedence and act as the program that we wrote 
+                 * If the operator is not inside the brackets, check the precedence and act as the program that we wrote
                  * earlier (without the precedence), however, we also need to set the flags to zero.
                  * */
             } else {
