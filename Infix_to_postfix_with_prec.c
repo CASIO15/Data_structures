@@ -9,6 +9,11 @@ typedef struct Node {
     struct Node *next;
 } Stack;
 
+typedef struct flag {
+     int open: 8;
+     int close: 8;
+} FLAGS;
+
 enum {FALSE, TRUE};
 
 Stack *top=NULL;
@@ -118,23 +123,24 @@ char pop(void)
 
 char *parseToPost(const char *s)
 {
-    int i, j, open=0, close=0;
+    FLAGS f = {0,0};
+    int i, j;
     char *postfix = (char *) malloc(sizeof(char)*strlen(s)+1);
 
     for (i=0, j=0; s[i] != '\0'; i++) {
         if (s[i] == '(')
-            open = 1;
+            f.open = 1;
         else if (s[i] == ')')
-            close = 1;
+            f.close = 1;
         else if (!isOperand(s[i]))
             postfix[j++] = s[i];
         else {
-            if (open || close) {
-                if (close && (pre_in(stackTop()) >= pre(s[i]))) {
+            if (f.open || f.close) {
+                if (f.close && (pre_in(stackTop()) >= pre(s[i]))) {
                     while (!empty())
                         postfix[j++] = pop();
                     push(s[i]);
-                    close = 0;
+                    f.close = 0;
                 } else
                     push(s[i]);
             } else {
@@ -145,7 +151,7 @@ char *parseToPost(const char *s)
                         postfix[j++] = pop();
                     push(s[i]);
                 }
-                open = close = 0;
+                f.open = f.close = 0;
             }
         }
     }
@@ -159,8 +165,12 @@ char *parseToPost(const char *s)
 
 int main(void)
 {
-    const char string[]="((a+b)*c)-d^e^f"; // abc*+de/-
+    const char string[]="((a+b)*c)-d^e^f"; // ab+c*de^-f^
+    const char string2[]= "x^y/(5*z)+10"; // xy^5z*/10+
+    const char string3[]= "(A*(B+(C/D)))"; // ABCD/+*
 
     printf("%s\n", parseToPost(string));
+    printf("%s\n", parseToPost(string2));
+    printf("%s\n", parseToPost(string3));
     return 0;
 }
