@@ -144,7 +144,7 @@ char *parseToPost(const char *s)
              * else push it into the stack.
              * */
             if (f.open || f.close) {
-                if (f.close && (pre_in(stackTop()) >= pre(s[i]))) {
+                if (f.close && (pre_in(stackTop()) > pre(s[i]))) {
                     while (!empty())
                         postfix[j++] = pop();
                     push(s[i]);
@@ -156,7 +156,7 @@ char *parseToPost(const char *s)
                  * earlier (without the precedence), however, we also need to set the flags to zero.
                  * */
             } else {
-                if (pre(s[i]) >= pre(stackTop()))
+                if (pre(s[i]) > pre(stackTop()))
                     push(s[i]);
                 else {
                     while (!empty())
@@ -179,7 +179,7 @@ int main(void)
 {
     const char string[]="((a+b)*c)-d^e^f"; // ab+c*de^-f^
     const char string2[]= "x^y/(5*z)+10"; // xy^5z*/10+
-    const char string3[]= "(A*(B+(C/D)))"; // ABCD/+*
+    const char string3[]= "(a+b*(d/c)-a^b)/10^2+3-2^7"; // abdc/*+ab^-102^/3+27^-
 
     printf("%s\n", parseToPost(string));
     printf("%s\n", parseToPost(string2));
