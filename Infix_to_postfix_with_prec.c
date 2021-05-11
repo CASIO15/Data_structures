@@ -63,23 +63,33 @@ char stackTop(void)
 // Precedence outside the brackets
 int pre(char c)
 {
-    if (c == '+' || c == '-')
+    if (c == '-')
         return 1;
-    else if (c == '*' || c == '/')
+    else if (c == '+')
         return 2;
-    else if (c == '^')
+    else if (c == '*')
         return 3;
+    else if (c == '/')
+        return 4;
+    else if (c == '^')
+        return 5;
+    return 0;
 }
 
 // Precedence of operators within the brackets (greater than those outside the brackets).
 int pre_in(char c)
 {
-    if (c == '+' || c == '-')
-        return 4;
-    else if (c == '*' || c == '/')
-        return 5;
-    else if (c == '^')
+    if (c == '-')
         return 6;
+    else if (c == '+')
+        return 7;
+    else if (c == '*')
+        return 8;
+    else if (c == '/')
+        return 9;
+    else if (c == '^')
+        return 10;
+    return 0;
 }
 
 void push(char n)
@@ -144,7 +154,7 @@ char *parseToPost(const char *s)
              * else push it into the stack.
              * */
             if (f.open || f.close) {
-                if (f.close && (pre_in(stackTop()) > pre(s[i]))) {
+                if (f.close && (pre_in(stackTop()) >= pre(s[i]))) {
                     while (!empty())
                         postfix[j++] = pop();
                     push(s[i]);
@@ -156,14 +166,15 @@ char *parseToPost(const char *s)
                  * earlier (without the precedence), however, we also need to set the flags to zero.
                  * */
             } else {
-                if (pre(s[i]) > pre(stackTop()))
+                if (pre(s[i]) >= pre(stackTop()))
                     push(s[i]);
                 else {
                     while (!empty())
                         postfix[j++] = pop();
                     push(s[i]);
+                    f.open = f.close = 0;
                 }
-                f.open = f.close = 0;
+               // f.open = f.close = 0;
             }
         }
     }
@@ -177,12 +188,14 @@ char *parseToPost(const char *s)
 
 int main(void)
 {
-    const char string[]="((a+b)*c)-d^e^f"; // ab+c*de^-f^
+    const char string[]="((a+b)*c)-d^e^f"; // ((ab)+c)*def^^-
     const char string2[]= "x^y/(5*z)+10"; // xy^5z*/10+
-    const char string3[]= "(a+b*(d/c)-a^b)/10^2+3-2^7"; // abdc/*+ab^-102^/3+27^-
+    const char string3[]= "a+b*d/c-a^b/10^2+3-2^7"; // abdc/*+ab^-102^/3+27^-
+    const char string4[]= "(A*(B+(C/D)))";
 
     printf("%s\n", parseToPost(string));
     printf("%s\n", parseToPost(string2));
     printf("%s\n", parseToPost(string3));
+    printf("%s\n", parseToPost(string4));
     return 0;
 }
