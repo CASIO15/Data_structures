@@ -13,8 +13,8 @@ typedef struct Node {
  * Bit field, setting the width of the attributes to 1 (1 bits long, we only need to able to represent 0 and 1)
 */
 typedef struct flag {
-     int open: 1;
-     int close: 1;
+    int open: 1;
+    int close: 1;
 } FLAGS;
 
 enum {FALSE, TRUE};
@@ -67,9 +67,9 @@ int pre(char c)
         return 1;
     else if (c == '+')
         return 2;
-    else if (c == '*')
-        return 3;
     else if (c == '/')
+        return 3;
+    else if (c == '*')
         return 4;
     else if (c == '^')
         return 5;
@@ -83,9 +83,9 @@ int pre_in(char c)
         return 6;
     else if (c == '+')
         return 7;
-    else if (c == '*')
-        return 8;
     else if (c == '/')
+        return 8;
+    else if (c == '*')
         return 9;
     else if (c == '^')
         return 10;
@@ -172,9 +172,8 @@ char *parseToPost(const char *s)
                     while (!empty())
                         postfix[j++] = pop();
                     push(s[i]);
-                    f.open = f.close = 0;
                 }
-               // f.open = f.close = 0;
+                f.open = f.close = 0;
             }
         }
     }
@@ -190,8 +189,8 @@ int main(void)
 {
     const char string[]="((a+b)*c)-d^e^f"; // ((ab)+c)*def^^-
     const char string2[]= "x^y/(5*z)+10"; // xy^5z*/10+
-    const char string3[]= "a+b*d/c-a^b/10^2+3-2^7"; // abdc/*+ab^-102^/3+27^-
-    const char string4[]= "(A*(B+(C/D)))";
+    const char string3[]= "(a+b)*d/c-a^b/10^2+3-2^7"; // abdc/*+ab^-102^/3+27^-
+    const char string4[]= "(A*(B+(C/D)))"; // ABCD/+*
 
     printf("%s\n", parseToPost(string));
     printf("%s\n", parseToPost(string2));
