@@ -57,7 +57,6 @@ int dequeue(QUEUE *q)
 
 void Display(QUEUE *q)
 {
-    static int f=0;
     if (q->Q[q->front] == q->rear || EMPTY(q->front, q->rear))
         ;
     else {
@@ -75,9 +74,6 @@ int main(void)
     for (i=0; i < q->size; i++)
         enqueue(q, i+1);
 
-    dequeue(q);
-    dequeue(q);
-    dequeue(q);
     Display(q);
 
     return 0;
