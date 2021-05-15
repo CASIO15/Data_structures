@@ -57,7 +57,7 @@ int dequeue(QUEUE *q)
 
 void Display(QUEUE *q)
 {
-    if (!(q->front == q->rear)) {
+    if (q->front < q->rear) {
         printf("%d ", q->Q[++q->front]);
         Display(q);
     }
