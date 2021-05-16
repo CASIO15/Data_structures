@@ -35,7 +35,7 @@ QUEUE *init(void)
 
 void enqueue(QUEUE *q, int x)
 {
-    if (FULL(q->front, q->size-1))
+    if (FULL(q->rear, q->size-1))
         puts("Queue overflow");
     else {
         ++q->rear;
@@ -71,7 +71,8 @@ int main(void)
     Display(q);
     for (i=0; i < q->size; i++)
         enqueue(q, i+1);
-
+    
+    
     dequeue(q);
     Display(q);
 
