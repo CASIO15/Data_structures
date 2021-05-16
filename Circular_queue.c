@@ -12,6 +12,9 @@ typedef struct queue {
     int size; // Size of the queue
     int front; // Front pointer
     int rear;  // Rear pointer
+    void (*display)(struct queue *);
+    void (*enqueue)(struct queue *, int);
+    int (*dequeue)(struct queue *);
 } QUEUE;
 
 
@@ -29,6 +32,15 @@ QUEUE *init(void)
 
     q->Q = (int *)malloc(sizeof(int)*q->size);
     q->front = q->rear = 0;
+
+    /* Function pointers initializations */
+    q->display = (void *) malloc(sizeof(Display));
+    q->enqueue = (void *) malloc(sizeof(enqueue));
+    q->dequeue = (int *) malloc(sizeof(dequeue));
+
+    q->display = &Display;
+    q->enqueue = &enqueue;
+    q->dequeue = &dequeue;
 
     return q;
 }
@@ -72,20 +84,21 @@ int main(void)
     int i;
 
     for (i=0; i < q->size; i++)
-        enqueue(q, i+1);
+        q->enqueue(q, i+1);
 
 
-    dequeue(q);
-    dequeue(q);
-    dequeue(q);
-    dequeue(q);
+    q->dequeue(q);
+    q->dequeue(q);
+    q->dequeue(q);
+    q->dequeue(q);
 
 
-    enqueue(q, 20);
-    enqueue(q, 30);
-    enqueue(q, 40);
+    q->enqueue(q, 20);
+    q->enqueue(q, 30);
+    q->enqueue(q, 40);
 
-    Display(q);
+    q->display(q);
 
+    free((int *)q->Q);
     return 0;
 }
