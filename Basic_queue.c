@@ -4,7 +4,7 @@
 #include "stdlib.h"
 
 #define EMPTY(a,b) ((a) == (b)) ? 1 : 0
-#define FULL(a,b) ((a) == (b)) ? 1 : 0
+#define FULL(a,b) EMPTY(a,b)
 
 
 typedef struct queue {
@@ -71,8 +71,8 @@ int main(void)
     Display(q);
     for (i=0; i < q->size; i++)
         enqueue(q, i+1);
-    
-    
+
+
     dequeue(q);
     Display(q);
 
