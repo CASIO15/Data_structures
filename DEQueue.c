@@ -1,4 +1,4 @@
-/* Double ended DEQueue using Linked List */
+/* Double ended DEQueue */
 
 #include "stdio.h"
 #include "stdlib.h"
