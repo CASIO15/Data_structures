@@ -78,7 +78,7 @@ int dequeue(QUEUE *q)
     if (q->s[0]->top == -1 && q->s[1]->top == -1)
         puts("The queue is empty !");
     else {
-        if (q->s[0]->top == q->s[0]->size-1 || q->s[0]->top < q->s[0]->size-1) {
+        if (q->s[0]->top == q->s[0]->size-1) {
             while (q->s[0]->top > 0) {
                 x = pop(q->s[0]);
                 push(q->s[1], x);
