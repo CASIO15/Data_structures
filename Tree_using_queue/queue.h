@@ -25,7 +25,6 @@ typedef struct queue
     Linked_list *front;
 } Queue;
 
-
 extern Node *Init_node(void);
 Linked_list *Init_list(void);
 Queue *Init_queue(void);
@@ -91,11 +90,9 @@ Node *dequeue(void)
     if (!IsEmptyQ(Q)) {
         n = first->node;
         Q->front = first;
-        first = Q->front;
         first = first->next;
     }
     return n;
 }
-
 
 #endif
