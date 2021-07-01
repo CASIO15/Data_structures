@@ -21,6 +21,7 @@ typedef struct linked_list
 
 typedef struct queue
 {
+    int cnt_nodes;
     Linked_list *rear;
     Linked_list *front;
 } Queue;
