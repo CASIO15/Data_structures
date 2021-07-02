@@ -9,7 +9,7 @@ typedef struct node
 {
     struct node *rchild;
     int data;
-    int prec;
+    int space;
     struct node *lchild;
 } Node;
 
