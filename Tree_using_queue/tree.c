@@ -1,6 +1,12 @@
 #include "stdio.h"
 #include "queue.h"
-#include "stdlib.h"
+#include "colors.h"
+
+#if defined(_WIN64)
+#define CLEAR "cls"
+#else
+#define CLEAR "clear"
+#endif
 
 Node *root=NULL;
 
@@ -13,8 +19,8 @@ void create(void)
     Node *p, *t;
     int x, space=10, i=0, cnt_nodes=2;
 
-    puts("### TO EXIT ENTER -1 ###");
-    printf("Enter root value \n");
+    red("### TO EXIT ENTER -1 ###", True);
+    blue("Enter root value ", True);
     scanf("%d", &x);
     root = Init_node();
     root->data = x;
@@ -44,16 +50,19 @@ void create(void)
             enqueue(t);
             i++;
         }
-        if (i == cnt_nodes) {
-            printf("[!] Tree is balanced\n");
+        if (i == cnt_nodes && (p->rchild && p->lchild)) {
+            green("[!] Tree is balanced", True);
             cnt_nodes *= 2;
             i = 0;
+            Q->level++;
             space += 5;
         }
+        if ((p->lchild && !p->rchild) || (p->rchild && !p->lchild))
+            space += 5;
         Q->cnt_nodes++;
     }
-    system("cls");
-    printf("\n\n");
+    system(CLEAR);
+    puts("");
 }
 
 void DisplayInOrder(Node *r)
@@ -63,10 +72,13 @@ void DisplayInOrder(Node *r)
         DisplayInOrder(r->lchild);
         for (i=0; i < r->space; i++)
             printf(" ");
-        if (r->space == 0)
-            printf("{ROOT} [%d]\n", r->data);
-        else
-            printf(" ----[%d\n", r->data);
+        if (r->space == 0) {
+            red("{ROOT} ", False);
+            printf("[%d]\n", r->data);
+        } else {
+            green(" ---[", False);
+            printf("%d\n", r->data);
+        }
         DisplayInOrder(r->rchild);
     }
 }
@@ -80,14 +92,17 @@ void FreeTree(Node *r)
     }
 }
 
-
 int main(void) {
 
+    char format[20];
+
     create();
-    puts("[+] Printing Tree ...");
-    printf("[+] %d Nodes\n", Q->cnt_nodes-1);
+    sprintf(format, "[+] %d Nodes", Q->cnt_nodes-1);
+
+    green("[+] Printing Tree ...", True);
+    green(format, True);
     DisplayInOrder(root);
     FreeTree(root);
-    puts("[*] Freeing Tree ...");
+    red("[*] Freeing Tree ...", True);
     return 0;
 }
