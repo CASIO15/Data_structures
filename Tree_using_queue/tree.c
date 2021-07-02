@@ -54,7 +54,6 @@ void create(void)
             green("[!] Tree is balanced", True);
             cnt_nodes *= 2;
             i = 0;
-            Q->level++;
             space += 5;
         }
         if ((p->lchild && !p->rchild) || (p->rchild && !p->lchild))
