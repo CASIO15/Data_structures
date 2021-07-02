@@ -45,7 +45,7 @@ void green(char *s, int newLine)
     printf(BHGRN);
     printf("%s", s);
     printf(RESET);
-    (newLine) ? puts("\n") : 0;
+    (newLine) ? puts("") : 0;
 }
 
 #endif
