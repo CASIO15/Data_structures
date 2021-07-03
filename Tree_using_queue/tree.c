@@ -1,11 +1,11 @@
 #include "stdio.h"
 #include "queue.h"
-#include "colors.h"
+#include "color.h"
 
-#if defined(_WIN64)
-#define CLEAR "cls"
+#if defined(_WIN32)
+    #define CLEAR "cls"
 #else
-#define CLEAR "clear"
+    #define CLEAR "clear"
 #endif
 
 Node *root=NULL;
@@ -19,8 +19,13 @@ void create(void)
     Node *p, *t;
     int x, space=10, i=0, cnt_nodes=2;
 
-    red("### TO EXIT ENTER -1 ###", True);
-    blue("Enter root value ", True);
+#ifdef WIN32
+    printf("ENTER -1 TO EXIT\n");
+    printf("Enter root value\n");
+#else
+    red("ENTER -1 TO EXIT", True);
+    blue("Enter root value", True);
+#endif
     scanf("%d", &x);
     root = Init_node();
     root->data = x;
@@ -51,7 +56,11 @@ void create(void)
             i++;
         }
         if (i == cnt_nodes && (p->rchild && p->lchild)) {
+#ifndef WIN32
             green("[!] Tree is balanced", True);
+#else
+            printf("[!] Tree is balanced\n");
+#endif
             cnt_nodes *= 2;
             i = 0;
             space += 5;
@@ -96,7 +105,7 @@ int main(void) {
     char format[20];
 
     create();
-    sprintf(format, "[+] %d Nodes", Q->cnt_nodes-1);
+    sprintf(format, "[+] %d Nodes", Q->cnt_nodes - 1);
 
     green("[+] Printing Tree ...", True);
     green(format, True);
