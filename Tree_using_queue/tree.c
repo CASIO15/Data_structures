@@ -1,6 +1,8 @@
 #include "stdio.h"
 #include "queue.h"
 #include "color.h"
+#include "Stack.h"
+
 
 #if defined(_WIN32)
     #define CLEAR "cls"
@@ -13,6 +15,7 @@ Node *root=NULL;
 void create(void);
 void DisplayInOrder(Node *);
 void FreeTree(Node *);
+void IterativeInOrder(Node *);
 
 void create(void)
 {
@@ -100,17 +103,48 @@ void FreeTree(Node *r)
     }
 }
 
+void IterativeInOrder(Node *r)
+{
+    while (r) {
+        printf("%d ", r->data);
+        if (r->lchild && r->rchild) {
+            push(r);
+            r = r->lchild;
+        } else if (!IsEmpty(s->top)) {
+            r = pop();
+            r = r->rchild;
+        } else
+            break;
+    }
+}
+
 int main(void) {
 
     char format[20];
+    int Mode;
 
     create();
-    sprintf(format, "[+] %d Nodes", Q->cnt_nodes - 1);
+    system(CLEAR);
 
-    green("[+] Printing Tree ...", True);
-    green(format, True);
-    DisplayInOrder(root);
-    FreeTree(root);
-    red("[*] Freeing Tree ...", True);
+    puts("Enter traversal mode:\n1) For Iterative Traversal\n2) For Recursive Traversal");
+    scanf("%d", &Mode);
+
+    switch (Mode) {
+        case 1:
+            puts("Iterative In Order Traversal:");
+            IterativeInOrder(root);
+            break;
+        case 2:
+            sprintf(format, "[+] %d Nodes", Q->cnt_nodes - 1);
+            green("[+] Printing Tree ...", True);
+            green(format, True);
+            DisplayInOrder(root);
+            FreeTree(root);
+            red("[*] Freeing Tree ...", True);
+            break;
+        default:
+            puts("Invalid traversal mode !");
+    }
+
     return 0;
 }
