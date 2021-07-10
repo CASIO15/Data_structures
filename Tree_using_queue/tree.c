@@ -103,7 +103,7 @@ void FreeTree(Node *r)
     }
 }
 
-void IterativePreOrder(Node *r)
+void IterativeInOrder(Node *r)
 {
     while (r) {
         printf("%d ", r->data);
