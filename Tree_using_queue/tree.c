@@ -103,7 +103,7 @@ void FreeTree(Node *r)
     }
 }
 
-void IterativeInOrder(Node *r)
+void IterativePreOrder(Node *r)
 {
     while (r) {
         printf("%d ", r->data);
@@ -126,7 +126,7 @@ int main(void) {
     create();
     system(CLEAR);
 
-    puts("Enter traversal mode:\n1) For Iterative Traversal\n2) For Recursive Traversal");
+    puts("Enter traversal mode:\n1)Iterative Traversal\n2)Recursive Traversal");
     scanf("%d", &Mode);
 
     switch (Mode) {
