@@ -5,9 +5,9 @@
 
 
 #if defined(_WIN32)
-    #define CLEAR "cls"
+#define CLEAR "cls"
 #else
-    #define CLEAR "clear"
+#define CLEAR "clear"
 #endif
 
 Node *root=NULL;
@@ -15,7 +15,7 @@ Node *root=NULL;
 void create(void);
 void DisplayInOrder(Node *);
 void FreeTree(Node *);
-void IterativeInOrder(Node *);
+void DisplayPreOrder(Node *);
 
 void create(void)
 {
@@ -76,7 +76,7 @@ void create(void)
     puts("");
 }
 
-void DisplayInOrder(Node *r)
+void DisplayPreOrder(Node *r)
 {
     int i;
     if (r) {
@@ -131,7 +131,7 @@ int main(void) {
 
     switch (Mode) {
         case 1:
-            puts("Iterative In Order Traversal:");
+            puts("Iterative Pre Order Traversal:");
             IterativeInOrder(root);
             break;
         case 2:
