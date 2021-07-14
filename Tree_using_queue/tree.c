@@ -1,7 +1,7 @@
 #include "stdio.h"
 #include "queue.h"
-#include "color.h"
-#include "Stack.h"
+#include "colors.h"
+#include "stack.h"
 
 
 #if defined(_WIN32)
@@ -80,7 +80,7 @@ void DisplayPreOrder(Node *r)
 {
     int i;
     if (r) {
-        DisplayInOrder(r->lchild);
+        DisplayPreOrder(r->lchild);
         for (i=0; i < r->space; i++)
             printf(" ");
         if (r->space == 0) {
@@ -90,7 +90,7 @@ void DisplayPreOrder(Node *r)
             green(" ---[", False);
             printf("%d\n", r->data);
         }
-        DisplayInOrder(r->rchild);
+        DisplayPreOrder(r->rchild);
     }
 }
 
@@ -138,7 +138,7 @@ int main(void) {
             sprintf(format, "[+] %d Nodes", Q->cnt_nodes - 1);
             green("[+] Printing Tree ...", True);
             green(format, True);
-            DisplayInOrder(root);
+            DisplayPreOrder(root);
             FreeTree(root);
             red("[*] Freeing Tree ...", True);
             break;
