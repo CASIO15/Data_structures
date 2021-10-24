@@ -16,7 +16,6 @@ typedef struct queue {
 
 #define IsEmpty(q) ((q)->rear == NULL && (q)->front == NULL) ? 1 : 0
 
-
 Queue *InitQueue();
 void EnQueue(Queue **queue, t_node *node);
 t_node *DeQueue(Queue **queue);
