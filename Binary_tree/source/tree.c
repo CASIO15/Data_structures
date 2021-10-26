@@ -127,3 +127,57 @@ int FindMin(Tree *root)
 
     return current;
 }
+
+void insert(Tree *root, int key)
+{
+    if (root != NULL) {
+        t_node *new = init_node(key);
+
+        if (root->rchild == NULL && root->lchild == NULL)
+            return;
+        if (root->rchild == NULL)
+            root->rchild = new;
+        else if (root->lchild == NULL)
+            root->lchild = new;
+
+        insert(root->lchild, key);
+        insert(root->rchild, key);
+    }
+}
+
+t_node *FindDeepestNode(Tree *root)
+{
+    if (root) {
+        int is_right_leaf = IS_R_LEAF(root), is_left_leaf = IS_L_LEAF(root);
+
+        if (!is_left_leaf && is_right_leaf)
+            return root->lchild;
+        else if (is_left_leaf && !is_right_leaf)
+            return root->rchild;
+        else if (IS_LEAF(root->rchild) && IS_LEAF(root->lchild))
+            return root->rchild;
+        FindDeepestNode(root->rchild);
+    } else
+        return NULL;
+}
+
+t_node *delete(Tree *root, t_node *head_ref, t_node *deepest, int key)
+{
+    if (root) {
+        int is_leaf = IS_LEAF(root);
+        // Delete leaf node
+        if (is_leaf && root->data == key) {
+            free(root);
+            return NULL;
+        }
+        // Deleting root node or any other node that is not a leaf node
+        // Find the rightmost, deepest node, copy its data, delete it and update the root node to the deepest data
+        if (root->data == key && !is_leaf) {
+            int deepest_data = deepest->data;
+            delete(head_ref, deepest, head_ref, deepest_data);
+            root->data = deepest_data;
+        }
+        root->lchild = delete(root->lchild, head_ref, deepest, key);
+        root->rchild = delete(root->rchild, head_ref, deepest, key);
+    }
+}
