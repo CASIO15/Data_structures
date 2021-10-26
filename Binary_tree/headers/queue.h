@@ -1,5 +1,5 @@
-#ifndef GEEKSFORGEEKS_QUEUE_H
-#define GEEKSFORGEEKS_QUEUE_H
+#ifndef QUEUE_H
+#define QUEUE_H
 
 #include "tree.h"
 
