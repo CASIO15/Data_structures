@@ -4,30 +4,28 @@
 
 int main()
 {
-    Tree *root = init_node(13);
+    Tree *root = init_node(4);
 
-    root->lchild = init_node(12);
-    root->lchild->lchild = init_node(4);
-    root->lchild->rchild = init_node(19);
+    root->lchild = init_node(5);
 
-    root->rchild = init_node(10);
-    root->rchild->lchild = init_node(16);
+    root->rchild = init_node(2);
+    root->rchild->lchild = init_node(3);
+    root->rchild->rchild = init_node(1);
+    root->rchild->lchild->lchild = init_node(6);
+    root->rchild->lchild->rchild = init_node(7);
 
-    insert(root, 100);
-    printf("Inorder traversal after insertion: ");
-    InOrder(root);
+
+
+    printf("Left view: ");
+    LeftView(root, 0);
     puts("");
 
-    delete(root, root, FindDeepestNode(root), 12);
-    delete(root, root, FindDeepestNode(root), 13);
+    printf("Left view iterative: ");
+    LeftViewIterative(root);
 
-    printf("Inorder traversal after deletion:  ");
-    InOrder(root);
-    puts("");
 
-    printf("Level order traversal: ");
+    printf("\nLevel order traversal: ");
     PrintKLevelIterative(root);
-    
     printf("The size of the tree is: %d\n", SizeOfTree(root));
     printf("The max element is: %d\n", FindMax(root));
     printf("The min element is: %d\n", FindMin(root));
