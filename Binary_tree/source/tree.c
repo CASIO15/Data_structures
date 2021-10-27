@@ -13,8 +13,9 @@ t_node *init_node(int data)
 void InOrder(Tree *root)
 {
     if (root) {
-        InOrder(root->lchild);
         printf("%d ", root->data);
+        InOrder(root->lchild);
+       // printf("%d ", root->data);
         InOrder(root->rchild);
     }
 }
@@ -232,10 +233,12 @@ int isCSum(Tree *root)
 
     int sum = isCSum(root->lchild) + isCSum(root->rchild);
 
-    if (sum != root->data && sum != 0)
-        return INT_MIN;
+    if (root->rchild == NULL && root->lchild == NULL)
+        return root->data;
     else if (sum == 0 && root->data == 0)
         return 0;
+    else if (sum != root->data)
+        return INT_MAX;
 
     return root->data;
 }
