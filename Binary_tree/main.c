@@ -3,22 +3,24 @@
 
 int main()
 {
-    Tree root = *init_node(-20);
 
-    root.lchild = init_node(-19);
-    root.rchild = init_node(-1);
+    Tree *root = init_node(1000);
 
-   root.rchild->lchild = init_node(-1);
-   root.rchild->rchild = init_node(0);
+    root->lchild = init_node(590);
+    root->rchild = init_node(410);
+
+    root->lchild->lchild = init_node(500);
+    root->lchild->rchild = init_node(90);
+
+    root->rchild->rchild = init_node(410);
 
 
-
-    if (isCSum(&root) != INT_MIN)
+    if (isCSum(root) == root->data)
         printf("True\n");
     else
         printf("False\n");
 
-/*
+
     printf("Left view: ");
     LeftView(&root, 0);
     puts("");
@@ -32,7 +34,6 @@ int main()
     printf("The size of the tree is: %d\n", SizeOfTree(&root));
     printf("The max element is: %d\n", FindMax(&root));
     printf("The min element is: %d\n", FindMin(&root));
-    */
 
     return 0;
 }
