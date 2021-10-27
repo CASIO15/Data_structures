@@ -96,12 +96,9 @@ void PrintKLevelIterative(Tree *root)
             temp = DeQueue(&queue);
 
             if (temp != NULL) {
-                if (temp->lchild != NULL)
-                    EnQueue(&queue, temp->lchild);
-
-                if (temp->rchild != NULL)
-                    EnQueue(&queue, temp->rchild);
                 printf("%d ", temp->data);
+                EnQueue(&queue, temp->lchild);
+                EnQueue(&queue, temp->rchild);
             }
         }
         puts("");
