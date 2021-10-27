@@ -30,5 +30,7 @@ void PrintKLevelIterative(Tree *root);
 void insert(Tree *root, int key);
 t_node *FindDeepestNode(Tree *root);
 t_node *delete(Tree *root, t_node *head_ref, t_node *deepest, int key);
+void LeftView(Tree *root, int level);
+void LeftViewIterative(Tree *root);
 
 #endif
