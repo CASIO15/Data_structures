@@ -92,11 +92,11 @@ void PrintKLevelIterative(Tree *root)
     t_node *temp = NULL;
 
     if (queue != NULL) {
-        while (queue->front && !IsEmpty(queue)) {
+        while (queue->front != NULL) {
             temp = DeQueue(&queue);
 
             if (temp != NULL) {
-                if (temp->lchild)
+                if (temp->lchild != NULL)
                     EnQueue(&queue, temp->lchild);
 
                 if (temp->rchild != NULL)
@@ -180,4 +180,48 @@ t_node *delete(Tree *root, t_node *head_ref, t_node *deepest, int key)
         root->lchild = delete(root->lchild, head_ref, deepest, key);
         root->rchild = delete(root->rchild, head_ref, deepest, key);
     }
+}
+
+void LeftView(Tree *root, int level)
+{
+    if (root == NULL)
+        return;
+
+    // If the level is zero, it means that we are at root level, print it
+    if (level == 0)
+        printf("%d ", root->data);
+
+    // If the left node of hte node is a leaf, and the node itself is not a leaf, print its left child
+    if (!IS_L_LEAF(root) && !IS_LEAF(root))
+        printf("%d ", root->lchild->data);
+
+    LeftView(root->lchild, level+1);
+    LeftView(root->rchild, level+1);
+}
+
+void LeftViewIterative(Tree *root)
+{
+    Queue *q = NULL;
+    int level = 0;
+
+    EnQueue(&q, root);
+    EnQueue(&q, NULL);
+
+    while (q->front != NULL) {
+        t_node *node = DeQueue(&q);
+
+        if (node != NULL) {
+            if (level == 0)
+                printf("%d ", node->data);
+            if (!IS_L_LEAF(node) || !IS_LEAF(node))
+                printf("%d ", node->lchild->data);
+
+            EnQueue(&q, node->lchild);
+            EnQueue(&q, node->rchild);
+        }
+        level++;
+    }
+
+    free(q);
+    q = NULL;
 }
