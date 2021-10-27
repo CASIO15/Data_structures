@@ -210,7 +210,7 @@ void LeftViewIterative(Tree *root)
         if (node != NULL) {
             if (level == 0)
                 printf("%d ", node->data);
-            if (!IS_L_LEAF(node) || !IS_LEAF(node))
+            if (!IS_L_LEAF(node) && !IS_LEAF(node))
                 printf("%d ", node->lchild->data);
 
             EnQueue(&q, node->lchild);
@@ -221,4 +221,21 @@ void LeftViewIterative(Tree *root)
 
     free(q);
     q = NULL;
+}
+
+// If the sum is not equal we return INT_MIN, we catch it in main, if it return INT_MIN
+// the sum of the children's is not equal to the parent node
+int isCSum(Tree *root)
+{
+    if (root == NULL)
+        return 0;
+
+    int sum = isCSum(root->lchild) + isCSum(root->rchild);
+
+    if (sum != root->data && sum != 0)
+        return INT_MIN;
+    else if (sum == 0 && root->data == 0)
+        return 0;
+
+    return root->data;
 }
