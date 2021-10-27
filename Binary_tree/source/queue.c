@@ -46,5 +46,8 @@ t_node *DeQueue(Queue **queue)
     (*queue)->front = (*queue)->front->next;
     free(current);
 
+    if ((*queue)->front == NULL)
+        (*queue)->rear = NULL;
+
     return return_val;
 }
