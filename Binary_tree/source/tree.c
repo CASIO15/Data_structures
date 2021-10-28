@@ -236,8 +236,7 @@ int isCSum(Tree* node)
     } else if (node->rchild && !node->lchild && (node->rchild->data != node->data)) {
         return 0;
     } else {
-        return isCSum(node->lchild) &&
-        isCSum(node->rchild);
+        return isCSum(node->lchild) && isCSum(node->rchild);
     }
 }
 
