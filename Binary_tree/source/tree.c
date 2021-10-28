@@ -1,40 +1,34 @@
 #include "tree.h"
 #include "queue.h"
 
-t_node *init_node(int data)
+t_node* init_node(int data)
 {
-    t_node *new = malloc(sizeof(t_node));
+    t_node* new = malloc(sizeof(t_node));
     new->data = data;
     new->lchild = new->rchild = NULL;
 
     return new;
 }
 
-void InOrder(Tree *root)
+void InOrder(Tree* root)
 {
     if (root) {
         printf("%d ", root->data);
         InOrder(root->lchild);
-       // printf("%d ", root->data);
+        // printf("%d ", root->data);
         InOrder(root->rchild);
     }
 }
 
-int max(int n1, int n2)
-{
-    if (n1 > n2)
-        return n1;
-    return n2;
-}
 
-int FindHeight(Tree *root)
+int FindHeight(Tree* root)
 {
     if (root == NULL)
         return 0;
-    return max(FindHeight(root->lchild)+1, FindHeight(root->rchild)+1);
+    return max(FindHeight(root->lchild) + 1, FindHeight(root->rchild) + 1);
 }
 
-void PrintKLevel(Tree *root, int k)
+void PrintKLevel(Tree* root, int k)
 {
     if (root == NULL)
         return;
@@ -42,12 +36,12 @@ void PrintKLevel(Tree *root, int k)
     if (k == 0)
         printf("%d ", root->data);
     else {
-        PrintKLevel(root->lchild, k-1);
-        PrintKLevel(root->rchild, k-1);
+        PrintKLevel(root->lchild, k - 1);
+        PrintKLevel(root->rchild, k - 1);
     }
 }
 
-t_node *CreateTree(Tree *root, int *arr, int idx, int size)
+t_node* CreateTree(Tree* root, int* arr, int idx, int size)
 {
     if (idx < size) {
         root = init_node(arr[idx]);
@@ -59,14 +53,14 @@ t_node *CreateTree(Tree *root, int *arr, int idx, int size)
     return root;
 }
 
-int SizeOfTree(Tree *root)
+int SizeOfTree(Tree* root)
 {
     if (root == NULL)
         return 0;
     return SizeOfTree(root->lchild) + 1 + SizeOfTree(root->rchild);
 }
 
-int FindMax(Tree *root)
+int FindMax(Tree* root)
 {
     if (root == NULL)
         return INT_MIN;
@@ -84,13 +78,13 @@ int FindMax(Tree *root)
     return current;
 }
 
-void PrintKLevelIterative(Tree *root)
+void PrintKLevelIterative(Tree* root)
 {
-    Queue *queue = NULL;
+    Queue* queue = NULL;
 
     EnQueue(&queue, root);
     EnQueue(&queue, NULL);
-    t_node *temp = NULL;
+    t_node* temp = NULL;
 
     if (queue != NULL) {
         while (queue->front != NULL) {
@@ -108,7 +102,7 @@ void PrintKLevelIterative(Tree *root)
     }
 }
 
-int FindMin(Tree *root)
+int FindMin(Tree* root)
 {
     if (root == NULL)
         return INT_MAX;
@@ -126,10 +120,10 @@ int FindMin(Tree *root)
     return current;
 }
 
-void insert(Tree *root, int key)
+void insert(Tree* root, int key)
 {
     if (root != NULL) {
-        t_node *new = init_node(key);
+        t_node* new = init_node(key);
 
         if (root->rchild == NULL && root->lchild == NULL)
             return;
@@ -143,7 +137,7 @@ void insert(Tree *root, int key)
     }
 }
 
-t_node *FindDeepestNode(Tree *root)
+t_node* FindDeepestNode(Tree* root)
 {
     if (root) {
         int is_right_leaf = IS_R_LEAF(root), is_left_leaf = IS_L_LEAF(root);
@@ -155,11 +149,12 @@ t_node *FindDeepestNode(Tree *root)
         else if (IS_LEAF(root->rchild) && IS_LEAF(root->lchild))
             return root->rchild;
         FindDeepestNode(root->rchild);
-    } else
+    }
+    else
         return NULL;
 }
 
-t_node *delete(Tree *root, t_node *head_ref, t_node *deepest, int key)
+t_node* delete(Tree* root, t_node* head_ref, t_node* deepest, int key)
 {
     if (root) {
         int is_leaf = IS_LEAF(root);
@@ -180,7 +175,7 @@ t_node *delete(Tree *root, t_node *head_ref, t_node *deepest, int key)
     }
 }
 
-void LeftView(Tree *root, int level)
+void LeftView(Tree* root, int level)
 {
     if (root == NULL)
         return;
@@ -193,20 +188,20 @@ void LeftView(Tree *root, int level)
     if (!IS_L_LEAF(root) && !IS_LEAF(root))
         printf("%d ", root->lchild->data);
 
-    LeftView(root->lchild, level+1);
-    LeftView(root->rchild, level+1);
+    LeftView(root->lchild, level + 1);
+    LeftView(root->rchild, level + 1);
 }
 
-void LeftViewIterative(Tree *root)
+void LeftViewIterative(Tree* root)
 {
-    Queue *q = NULL;
+    Queue* q = NULL;
     int level = 0;
 
     EnQueue(&q, root);
     EnQueue(&q, NULL);
 
     while (q->front != NULL) {
-        t_node *node = DeQueue(&q);
+        t_node* node = DeQueue(&q);
 
         if (node != NULL) {
             if (level == 0)
@@ -224,21 +219,35 @@ void LeftViewIterative(Tree *root)
     q = NULL;
 }
 
-// If the sum is not equal we return INT_MIN, we catch it in main, if it return INT_MIN
-// the sum of the children's is not equal to the parent node
-int isCSum(Tree *root)
+int isCSum(Tree* node)
 {
-    if (root == NULL)
-        return 0;
+    if (node == NULL)
+        return 1;
 
-    int sum = isCSum(root->lchild) + isCSum(root->rchild);
+    int val = 0;
 
-    if (root->rchild == NULL && root->lchild == NULL)
-        return root->data;
-    else if (sum == 0 && root->data == 0)
-        return 0;
-    else if (sum != root->data)
-        return INT_MAX;
+    if (!IS_LEAF(node)) {
+        if (node->lchild && node->rchild && (node->lchild->data + node->rchild->data == node->data))
+            val = 1;
+        else if (node->rchild && (node->data == node->rchild->data))
+            val = 1;
+        else if (node->lchild && (node->data == node->lchild->data))
+            val = 1;
+        else
+            return 0;
 
-    return root->data;
+        return isCSum(node->lchild) && val && isCSum(node->rchild);
+    }
 }
+
+
+/*
+
+        1000  <--
+       /    \
+1    590      410  1
+    /   \        \
+0 500    90       410 0
+
+
+*/
