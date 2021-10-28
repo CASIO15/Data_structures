@@ -10,6 +10,11 @@ t_node* init_node(int data)
     return new;
 }
 
+int max(int n1, int n2)
+{
+    return (n1 > n2) ? n1 : n2;
+}
+
 void InOrder(Tree* root)
 {
     if (root) {
@@ -221,10 +226,10 @@ void LeftViewIterative(Tree* root)
 
 int isCSum(Tree* node)
 {
+    int val = 1;
+
     if (node == NULL)
         return 1;
-
-    int val = 0;
 
     if (!IS_LEAF(node)) {
         if (node->lchild && node->rchild && (node->lchild->data + node->rchild->data == node->data))
@@ -234,20 +239,16 @@ int isCSum(Tree* node)
         else if (node->lchild && (node->data == node->lchild->data))
             val = 1;
         else
-            return 0;
-
-        return isCSum(node->lchild) && val && isCSum(node->rchild);
+            val = 0;
     }
+    return isCSum(node->lchild) && val && isCSum(node->rchild);
 }
 
 
 /*
-
         1000  <--
        /    \
 1    590      410  1
     /   \        \
 0 500    90       410 0
-
-
 */
