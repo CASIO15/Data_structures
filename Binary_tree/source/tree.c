@@ -226,24 +226,20 @@ void LeftViewIterative(Tree* root)
 
 int isCSum(Tree* node)
 {
-    int val = 1;
-
     if (node == NULL)
         return 1;
 
-    if (!IS_LEAF(node)) {
-        if (node->lchild && node->rchild && (node->lchild->data + node->rchild->data == node->data))
-            val = 1;
-        else if (node->rchild && (node->data == node->rchild->data))
-            val = 1;
-        else if (node->lchild && (node->data == node->lchild->data))
-            val = 1;
-        else
-            val = 0;
+    if (node->lchild && node->rchild && (node->lchild->data + node->rchild->data != node->data)) {
+        return 0;
+    } else if (node->lchild && !node->rchild && (node->lchild->data != node->data)) {
+        return 0;
+    } else if (node->rchild && !node->lchild && (node->rchild->data != node->data)) {
+        return 0;
+    } else {
+        return isCSum(node->lchild) &&
+        isCSum(node->rchild);
     }
-    return isCSum(node->lchild) && val && isCSum(node->rchild);
 }
-
 
 /*
         1000  <--
