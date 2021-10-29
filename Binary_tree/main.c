@@ -1,6 +1,14 @@
 #include <stdio.h>
 #include "tree.h"
 
+#ifdef WIN32
+    #define CLEAR "cls"
+#elif
+    #define CLEAR "clear"
+#endif
+
+void PrintMenu();
+
 void PrintMenu()
 {
     printf("Tree Methods:\n"
@@ -17,18 +25,28 @@ void PrintMenu()
            "10.To exit.\n");
 }
 
-int main()
+int main(int argc, char **argv)
 {
-    Tree *root = init_node(10);
+    // TODO: Allow the user to construct the tree using argv, or in an iterative way
+    // TODO: Add more methods.
+
+    Tree *root = NULL;
+    int root_data;
     int user_choice;
     int exit = 0;
 
-    root->lchild = init_node(8);
-    root->lchild->lchild = init_node(4);
-    root->lchild->rchild = init_node(4);
-    root->lchild->rchild->lchild = init_node(4);
+    printf("Create tree:\n"
+           "************\n\n"
+           "Enter root data: ");
 
-    root->rchild = init_node(2);
+    if (scanf("%d", &root_data) == 1) {
+        root = init_node(root_data);
+        root = CreateTreeFromUserInput(root);
+        system(CLEAR);
+    } else {
+        fprintf(stderr, "Error ! Invalid input !\n");
+        exit = 1;
+    }
 
     PrintMenu();
 
@@ -77,18 +95,12 @@ int main()
                 exit = 1;
                 break;
             default:
-                fprintf(stderr, "Invalid choice !");
-#ifdef WIN32
-#define CLEAR "cls"
-#elif
-#define CLEAR "clear"
-#endif
+                fprintf(stderr, "Invalid choice !\n");
                 system(CLEAR);
                 PrintMenu();
-#undef CLEAR
                 break;
         }
     }
-
+#undef CLEAR
     return 0;
 }
