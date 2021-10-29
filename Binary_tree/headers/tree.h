@@ -17,10 +17,12 @@ typedef t_node Tree;
 #define IS_R_LEAF(root) ((root)->rchild == NULL) ? 1 : 0
 #define IS_L_LEAF(root) ((root)->lchild == NULL) ? 1 : 0
 
+#define max(a,b) ((a) > (b)) ? (a) : (b)
+#define abs(a)   ((a) < 0) ? (-(a)) : (a)
+
 t_node *init_node(int data);
 void InOrder(Tree *root);
 int FindHeight(Tree *root);
-int max(int n1, int n2);
 void PrintKLevel(Tree *root, int k);
 t_node *CreateTree(Tree *root, int *arr, int idx, int size);
 int SizeOfTree(Tree *root);
@@ -33,5 +35,6 @@ t_node *delete(Tree *root, t_node *head_ref, t_node *deepest, int key);
 void LeftView(Tree *root, int level);
 void LeftViewIterative(Tree *root);
 int isCSum(Tree *root);
+int CheckHeightBalance(Tree *node);
 
 #endif
