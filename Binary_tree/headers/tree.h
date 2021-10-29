@@ -7,15 +7,15 @@
 
 typedef struct node {
     int data;
-    struct node *lchild;
-    struct node *rchild;
+    struct node *left;
+    struct node *right;
 } t_node;
 
 typedef t_node Tree;
 
-#define IS_LEAF(root) ((root)->lchild == NULL && (root)->rchild == NULL) ? 1 : 0
-#define IS_R_LEAF(root) ((root)->rchild == NULL) ? 1 : 0
-#define IS_L_LEAF(root) ((root)->lchild == NULL) ? 1 : 0
+#define IS_LEAF(root) ((root)->left == NULL && (root)->right == NULL) ? 1 : 0
+#define IS_R_LEAF(root) ((root)->right == NULL) ? 1 : 0
+#define IS_L_LEAF(root) ((root)->left == NULL) ? 1 : 0
 
 #define max(a,b) ((a) > (b)) ? (a) : (b)
 #define abs(a)   ((a) < 0) ? (-(a)) : (a)
@@ -36,5 +36,6 @@ void LeftView(Tree *root, int level);
 void LeftViewIterative(Tree *root);
 int isCSum(Tree *root);
 int CheckHeightBalance(Tree *node);
+t_node *CreateTreeFromUserInput(Tree *node);
 
 #endif
