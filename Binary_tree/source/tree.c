@@ -5,7 +5,7 @@ t_node* init_node(int data)
 {
     t_node* new = malloc(sizeof(t_node));
     new->data = data;
-    new->lchild = new->rchild = NULL;
+    new->left = new->right = NULL;
 
     return new;
 }
@@ -14,18 +14,16 @@ void InOrder(Tree* root)
 {
     if (root) {
         printf("%d ", root->data);
-        InOrder(root->lchild);
-        // printf("%d ", root->data);
-        InOrder(root->rchild);
+        InOrder(root->left);
+        InOrder(root->right);
     }
 }
-
 
 int FindHeight(Tree* root)
 {
     if (root == NULL)
         return 0;
-    return max(FindHeight(root->lchild) + 1, FindHeight(root->rchild) + 1);
+    return max(FindHeight(root->left) + 1, FindHeight(root->right) + 1);
 }
 
 void PrintKLevel(Tree* root, int k)
@@ -36,8 +34,8 @@ void PrintKLevel(Tree* root, int k)
     if (k == 0)
         printf("%d ", root->data);
     else {
-        PrintKLevel(root->lchild, k - 1);
-        PrintKLevel(root->rchild, k - 1);
+        PrintKLevel(root->left, k - 1);
+        PrintKLevel(root->right, k - 1);
     }
 }
 
@@ -46,10 +44,9 @@ t_node* CreateTree(Tree* root, int* arr, int idx, int size)
     if (idx < size) {
         root = init_node(arr[idx]);
 
-        root->lchild = CreateTree(root->lchild, arr, idx * 2 + 1, size);
-        root->rchild = CreateTree(root->rchild, arr, idx * 2 + 2, size);
+        root->left = CreateTree(root->left, arr, idx * 2 + 1, size);
+        root->right = CreateTree(root->right, arr, idx * 2 + 2, size);
     }
-
     return root;
 }
 
@@ -57,7 +54,7 @@ int SizeOfTree(Tree* root)
 {
     if (root == NULL)
         return 0;
-    return SizeOfTree(root->lchild) + 1 + SizeOfTree(root->rchild);
+    return SizeOfTree(root->left) + 1 + SizeOfTree(root->right);
 }
 
 int FindMax(Tree* root)
@@ -67,8 +64,8 @@ int FindMax(Tree* root)
 
     int max_left, max_right, current = root->data;
 
-    max_left = FindMax(root->lchild);
-    max_right = FindMax(root->rchild);
+    max_left = FindMax(root->left);
+    max_right = FindMax(root->right);
 
     if (max_left > current)
         current = max_left;
@@ -92,8 +89,8 @@ void PrintKLevelIterative(Tree* root)
 
             if (temp != NULL) {
                 printf("%d ", temp->data);
-                EnQueue(&queue, temp->lchild);
-                EnQueue(&queue, temp->rchild);
+                EnQueue(&queue, temp->left);
+                EnQueue(&queue, temp->right);
             }
         }
         puts("");
@@ -109,8 +106,8 @@ int FindMin(Tree* root)
 
     int min_left, min_right, current = root->data;
 
-    min_left = FindMin(root->lchild);
-    min_right = FindMin(root->rchild);
+    min_left = FindMin(root->left);
+    min_right = FindMin(root->right);
 
     if (min_left < current)
         current = min_left;
@@ -125,15 +122,15 @@ void insert(Tree* root, int key)
     if (root != NULL) {
         t_node* new = init_node(key);
 
-        if (root->rchild == NULL && root->lchild == NULL)
+        if (root->right == NULL && root->left == NULL)
             return;
-        if (root->rchild == NULL)
-            root->rchild = new;
-        else if (root->lchild == NULL)
-            root->lchild = new;
+        if (root->right == NULL)
+            root->right = new;
+        else if (root->left == NULL)
+            root->left = new;
 
-        insert(root->lchild, key);
-        insert(root->rchild, key);
+        insert(root->left, key);
+        insert(root->right, key);
     }
 }
 
@@ -143,12 +140,12 @@ t_node* FindDeepestNode(Tree* root)
         int is_right_leaf = IS_R_LEAF(root), is_left_leaf = IS_L_LEAF(root);
 
         if (!is_left_leaf && is_right_leaf)
-            return root->lchild;
+            return root->left;
         else if (is_left_leaf && !is_right_leaf)
-            return root->rchild;
-        else if (IS_LEAF(root->rchild) && IS_LEAF(root->lchild))
-            return root->rchild;
-        FindDeepestNode(root->rchild);
+            return root->right;
+        else if (IS_LEAF(root->right) && IS_LEAF(root->left))
+            return root->right;
+        FindDeepestNode(root->right);
     }
     else
         return NULL;
@@ -170,8 +167,8 @@ t_node* delete(Tree* root, t_node* head_ref, t_node* deepest, int key)
             delete(head_ref, deepest, head_ref, deepest_data);
             root->data = deepest_data;
         }
-        root->lchild = delete(root->lchild, head_ref, deepest, key);
-        root->rchild = delete(root->rchild, head_ref, deepest, key);
+        root->left = delete(root->left, head_ref, deepest, key);
+        root->right = delete(root->right, head_ref, deepest, key);
     }
 }
 
@@ -186,10 +183,10 @@ void LeftView(Tree* root, int level)
 
     // If the left node of hte node is a leaf, and the node itself is not a leaf, print its left child
     if (!IS_L_LEAF(root) && !IS_LEAF(root))
-        printf("%d ", root->lchild->data);
+        printf("%d ", root->left->data);
 
-    LeftView(root->lchild, level + 1);
-    LeftView(root->rchild, level + 1);
+    LeftView(root->left, level + 1);
+    LeftView(root->right, level + 1);
 }
 
 void LeftViewIterative(Tree* root)
@@ -207,10 +204,10 @@ void LeftViewIterative(Tree* root)
             if (level == 0)
                 printf("%d ", node->data);
             if (!IS_L_LEAF(node) && !IS_LEAF(node))
-                printf("%d ", node->lchild->data);
+                printf("%d ", node->left->data);
 
-            EnQueue(&q, node->lchild);
-            EnQueue(&q, node->rchild);
+            EnQueue(&q, node->left);
+            EnQueue(&q, node->right);
         }
         level++;
     }
@@ -232,14 +229,14 @@ int isCSum(Tree* node)
     if (node == NULL)
         return 1;
 
-    if (node->lchild && node->rchild && (node->lchild->data + node->rchild->data != node->data)) {
+    if (node->left && node->right && (node->left->data + node->right->data != node->data)) {
         return 0;
-    } else if (node->lchild && !node->rchild && (node->lchild->data != node->data)) {
+    } else if (node->left && !node->right && (node->left->data != node->data)) {
         return 0;
-    } else if (node->rchild && !node->lchild && (node->rchild->data != node->data)) {
+    } else if (node->right && !node->left && (node->right->data != node->data)) {
         return 0;
     } else {
-        return isCSum(node->lchild) && isCSum(node->rchild);
+        return isCSum(node->left) && isCSum(node->right);
     }
 }
 
@@ -251,13 +248,43 @@ int CheckHeightBalance(Tree *node)
     if (node == NULL)
         return 1;
 
-    left_height = FindHeight(node->lchild);
-    right_height = FindHeight(node->rchild);
+    left_height = FindHeight(node->left);
+    right_height = FindHeight(node->right);
 
     diff = abs(left_height - right_height);
 
     if (diff >= 2)
         return 0;
 
-    return CheckHeightBalance(node->lchild) && CheckHeightBalance(node->rchild);
+    return CheckHeightBalance(node->left) && CheckHeightBalance(node->right);
+}
+
+t_node *CreateTreeFromUserInput(Tree *node)
+{
+    if (node != NULL) {
+        int data = 0;
+
+        printf("Enter %d left child: ", node->data);
+        if (scanf("%d", &data) != 1)
+            exit(EXIT_FAILURE);
+
+        if (data != -1) {
+            node->left = init_node(data);
+        }
+
+        printf("Enter %d right child: ", node->data);
+        if (scanf("%d", &data) != 1)
+            exit(EXIT_FAILURE);
+
+        if (data != -1) {
+            node->right = init_node(data);
+        }
+
+        node->left = CreateTreeFromUserInput(node->left);
+        node->right = CreateTreeFromUserInput(node->right);
+
+        return node;
+    }
+
+    return NULL;
 }
