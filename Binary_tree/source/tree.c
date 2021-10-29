@@ -10,11 +10,6 @@ t_node* init_node(int data)
     return new;
 }
 
-int max(int n1, int n2)
-{
-    return (n1 > n2) ? n1 : n2;
-}
-
 void InOrder(Tree* root)
 {
     if (root) {
@@ -219,10 +214,18 @@ void LeftViewIterative(Tree* root)
         }
         level++;
     }
-
     free(q);
     q = NULL;
 }
+
+/*
+        1000  <-- ROOT
+       /    \
+    590      410
+   /   \    /   \
+500    90  NULL  410
+
+*/
 
 int isCSum(Tree* node)
 {
@@ -240,10 +243,21 @@ int isCSum(Tree* node)
     }
 }
 
-/*
-        1000  <--
-       /    \
-1    590      410  1
-    /   \        \
-0 500    90       410 0
-*/
+int CheckHeightBalance(Tree *node)
+{
+    int left_height, right_height;
+    int diff;
+
+    if (node == NULL)
+        return 1;
+
+    left_height = FindHeight(node->lchild);
+    right_height = FindHeight(node->rchild);
+
+    diff = abs(left_height - right_height);
+
+    if (diff >= 2)
+        return 0;
+
+    return CheckHeightBalance(node->lchild) && CheckHeightBalance(node->rchild);
+}
