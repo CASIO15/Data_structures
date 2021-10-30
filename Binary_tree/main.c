@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include "tree.h"
 
 #ifdef WIN32
@@ -22,35 +23,51 @@ void PrintMenu()
            "7.Print the size of the tree.\n"
            "8.Print the max key.\n"
            "9.Print the min key.\n"
-           "10.To exit.\n");
+           "10.Exit.\n");
 }
 
 int main(int argc, char **argv)
 {
-    // TODO: Allow the user to construct the tree using argv, or in an iterative way
-    // TODO: Add more methods.
-
     Tree *root = NULL;
-    int root_data;
+    int root_data = 0;
     int user_choice;
-    int exit = 0;
+    int exit_loop = 0;
 
-    printf("Create tree:\n"
-           "************\n\n"
-           "Enter root data: ");
+    if (argc == 1) {
+        printf("Create tree:\n"
+               "************\n\n"
+               "Enter root data: ");
 
-    if (scanf("%d", &root_data) == 1) {
-        root = init_node(root_data);
-        root = CreateTreeFromUserInput(root);
-        system(CLEAR);
+        if (scanf("%d", &root_data) == 1) {
+            root = init_node(root_data);
+            root = CreateTreeFromUserInput(root);
+            system(CLEAR);
+        } else {
+            fprintf(stderr, "Error ! Invalid input !\n");
+            exit_loop = 1;
+        }
     } else {
-        fprintf(stderr, "Error ! Invalid input !\n");
-        exit = 1;
+        // Creating tree based on the argv arguments passed.
+        int i;
+        int *arr = NULL;
+        int alloc_size = 0;
+
+        for (i = 1; argv[i] != NULL; i++)
+            alloc_size += (int) strlen(argv[i]);
+
+        if ((arr = malloc(sizeof(int) * alloc_size)) == NULL) {
+            fprintf(stderr, "Not enough memory !\n");
+            exit(EXIT_FAILURE);
+        }
+        for (i = 1; argv[i] != NULL; i++)
+            arr[i-1] = atoi(argv[i]);
+
+        root = CreateTree(root, arr, 0, i-1);
     }
 
     PrintMenu();
 
-    for (;exit != 1;) {
+    for (;exit_loop != 1;) {
         printf("\nENTER YOUR CHOICE: ");
         if (scanf("%d", &user_choice) != 1) {
             fprintf(stderr, "Error ! Invalid choice\n");
@@ -92,7 +109,7 @@ int main(int argc, char **argv)
                 printf("MIN key is: %d\n", FindMin(root));
                 break;
             case 10:
-                exit = 1;
+                exit_loop = 1;
                 break;
             default:
                 fprintf(stderr, "Invalid choice !\n");
