@@ -293,9 +293,12 @@ int GetLevelCount(Tree *root, int level, int depth)
 {
     if (root == NULL)
         return 0;
-    if (level == depth || depth == 1)
+
+    root->space_cnt = 0;
+    if (level == depth) {
         return 1;
-    return GetLevelCount(root->left, level + 1, depth) + GetLevelCount(root->right, level+1, depth);
+    }
+    return GetLevelCount(root->left, level, depth-1) + GetLevelCount(root->right, level, depth-1);
 }
 
 int FindWidth(Tree *root)
@@ -317,5 +320,44 @@ void FreeTree(Tree *root)
         FreeTree(root->left);
         FreeTree(root->right);
         free(root);
+    }
+}
+
+void SetSpaceByLevel(Tree *root, int level, int depth)
+{
+    if (root == NULL)
+        return;
+    if (level == 0) {
+        root->space_cnt = 0;
+    }
+    if (level < depth) {
+        // Setting the space for the level
+        root->space_cnt = 7 * level;
+    }
+    SetSpaceByLevel(root->left, level + 1, depth);
+    SetSpaceByLevel(root->right, level + 1, depth);
+}
+
+void LoopEachLevel(Tree *root)
+{
+    int height = FindHeight(root);
+    SetSpaceByLevel(root, 0, height);
+}
+
+void PrettyPrint(Tree *root)
+{
+    int i;
+    if (root) {
+        PrettyPrint(root->left);
+        for (i=0; i < root->space_cnt; i++)
+            printf(" ");
+        if (root->space_cnt == 0) {
+            printf("{ROOT} ");
+            printf("[%d]\n", root->data);
+        } else {
+            printf(" ---[");
+            printf("%d\n", root->data);
+        }
+        PrettyPrint(root->right);
     }
 }
