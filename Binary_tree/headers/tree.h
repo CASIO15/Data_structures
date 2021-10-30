@@ -7,6 +7,7 @@
 
 typedef struct node {
     int data;
+    int space_cnt;
     struct node *left;
     struct node *right;
 } t_node;
@@ -40,5 +41,9 @@ t_node *CreateTreeFromUserInput(Tree *node);
 int FindWidth(Tree *root);
 int GetLevelCount(Tree *root, int level, int depth);
 void FreeTree(Tree *root);
+
+void SetSpaceByLevel(Tree *root, int level, int depth);
+void LoopEachLevel(Tree *root);
+void PrettyPrint(Tree *root);
 
 #endif
