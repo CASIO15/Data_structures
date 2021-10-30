@@ -288,3 +288,34 @@ t_node *CreateTreeFromUserInput(Tree *node)
 
     return NULL;
 }
+
+int GetLevelCount(Tree *root, int level, int depth)
+{
+    if (root == NULL)
+        return 0;
+    if (level == depth || depth == 1)
+        return 1;
+    return GetLevelCount(root->left, level + 1, depth) + GetLevelCount(root->right, level+1, depth);
+}
+
+int FindWidth(Tree *root)
+{
+    int depth = FindHeight(root);
+    int max = 0, current;
+
+    for (int i = 0; i < depth; i++) {
+        current = GetLevelCount(root, i, depth);
+        if (current > max)
+            max = current;
+    }
+    return max;
+}
+
+void FreeTree(Tree *root)
+{
+    if (root) {
+        FreeTree(root->left);
+        FreeTree(root->right);
+        free(root);
+    }
+}
