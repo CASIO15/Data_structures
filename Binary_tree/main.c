@@ -50,10 +50,7 @@ int main(int argc, char **argv)
         // Creating tree based on the argv arguments passed.
         int i;
         int *arr = NULL;
-        int alloc_size = 0;
-
-        for (i = 1; argv[i] != NULL; i++)
-            alloc_size += (int) strlen(argv[i]);
+        int alloc_size = argc - 1;
 
         if ((arr = malloc(sizeof(int) * alloc_size)) == NULL) {
             fprintf(stderr, "Not enough memory !\n");
