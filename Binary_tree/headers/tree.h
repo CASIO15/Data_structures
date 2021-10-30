@@ -37,5 +37,8 @@ void LeftViewIterative(Tree *root);
 int isCSum(Tree *root);
 int CheckHeightBalance(Tree *node);
 t_node *CreateTreeFromUserInput(Tree *node);
+int FindWidth(Tree *root);
+int GetLevelCount(Tree *root, int level, int depth);
+void FreeTree(Tree *root);
 
 #endif
