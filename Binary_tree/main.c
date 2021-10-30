@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <string.h>
 #include "tree.h"
 
 #ifdef WIN32
@@ -23,7 +22,8 @@ void PrintMenu()
            "7.Print the size of the tree.\n"
            "8.Print the max key.\n"
            "9.Print the min key.\n"
-           "10.Exit.\n");
+           "10.Print tree width.\n"
+           "11.Exit.\n");
 }
 
 int main(int argc, char **argv)
@@ -39,9 +39,13 @@ int main(int argc, char **argv)
                "Enter root data: ");
 
         if (scanf("%d", &root_data) == 1) {
-            root = init_node(root_data);
-            root = CreateTreeFromUserInput(root);
-            system(CLEAR);
+            if (root_data == -1) {
+                root = NULL;
+            } else {
+                root = init_node(root_data);
+                root = CreateTreeFromUserInput(root);
+                system(CLEAR);
+            }
         } else {
             fprintf(stderr, "Error ! Invalid input !\n");
             exit_loop = 1;
@@ -106,7 +110,11 @@ int main(int argc, char **argv)
                 printf("MIN key is: %d\n", FindMin(root));
                 break;
             case 10:
+                printf("Tree width: %d\n", FindWidth(root));
+                break;
+            case 11:
                 exit_loop = 1;
+                FreeTree(root);
                 break;
             default:
                 fprintf(stderr, "Invalid choice !\n");
