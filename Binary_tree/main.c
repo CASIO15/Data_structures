@@ -23,7 +23,8 @@ void PrintMenu()
            "8.Print the max key.\n"
            "9.Print the min key.\n"
            "10.Print tree width.\n"
-           "11.Exit.\n");
+           "11.Pretty print the tree.\n"
+           "12.Exit.\n");
 }
 
 int main(int argc, char **argv)
@@ -113,6 +114,10 @@ int main(int argc, char **argv)
                 printf("Tree width: %d\n", FindWidth(root));
                 break;
             case 11:
+                LoopEachLevel(root);
+                PrettyPrint(root);
+                break;
+            case 12:
                 exit_loop = 1;
                 FreeTree(root);
                 break;
