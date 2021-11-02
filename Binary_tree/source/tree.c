@@ -151,7 +151,7 @@ t_node* FindDeepestNode(Tree* root)
         return NULL;
 }
 
-t_node* delete(Tree* root, t_node* head_ref, t_node* deepest, int key)
+t_node* delete(Tree* root, t_node* head, int key)
 {
     if (root) {
         int is_leaf = IS_LEAF(root);
@@ -160,16 +160,19 @@ t_node* delete(Tree* root, t_node* head_ref, t_node* deepest, int key)
             free(root);
             return NULL;
         }
-        // Deleting root node or any other node that is not a leaf node
-        // Find the rightmost, deepest node, copy its data, delete it and update the root node to the deepest data
-        if (root->data == key && !is_leaf) {
-            int deepest_data = deepest->data;
-            delete(head_ref, deepest, head_ref, deepest_data);
-            root->data = deepest_data;
+
+        if (!is_leaf && root->data == key) {
+            t_node* deepest = FindDeepestNode(head);
+            int data = deepest->data;
+
+            delete(head, head, deepest->data);
+            root->data = data;
         }
-        root->left = delete(root->left, head_ref, deepest, key);
-        root->right = delete(root->right, head_ref, deepest, key);
+
+        root->left = delete(root->left, head, key);
+        root->right = delete(root->right, head, key);
     }
+    return root;
 }
 
 void LeftView(Tree* root, int level)
@@ -231,16 +234,19 @@ int isCSum(Tree* node)
 
     if (node->left && node->right && (node->left->data + node->right->data != node->data)) {
         return 0;
-    } else if (node->left && !node->right && (node->left->data != node->data)) {
+    }
+    else if (node->left && !node->right && (node->left->data != node->data)) {
         return 0;
-    } else if (node->right && !node->left && (node->right->data != node->data)) {
+    }
+    else if (node->right && !node->left && (node->right->data != node->data)) {
         return 0;
-    } else {
+    }
+    else {
         return isCSum(node->left) && isCSum(node->right);
     }
 }
 
-int CheckHeightBalance(Tree *node)
+int CheckHeightBalance(Tree* node)
 {
     int left_height, right_height;
     int diff;
@@ -259,7 +265,7 @@ int CheckHeightBalance(Tree *node)
     return CheckHeightBalance(node->left) && CheckHeightBalance(node->right);
 }
 
-t_node *CreateTreeFromUserInput(Tree *node)
+t_node* CreateTreeFromUserInput(Tree* node)
 {
     if (node != NULL) {
         int data = 0;
@@ -289,7 +295,7 @@ t_node *CreateTreeFromUserInput(Tree *node)
     return NULL;
 }
 
-int GetLevelCount(Tree *root, int level, int depth)
+int GetLevelCount(Tree* root, int level, int depth)
 {
     if (root == NULL)
         return 0;
@@ -298,10 +304,10 @@ int GetLevelCount(Tree *root, int level, int depth)
     if (level == depth) {
         return 1;
     }
-    return GetLevelCount(root->left, level, depth-1) + GetLevelCount(root->right, level, depth-1);
+    return GetLevelCount(root->left, level, depth - 1) + GetLevelCount(root->right, level, depth - 1);
 }
 
-int FindWidth(Tree *root)
+int FindWidth(Tree* root)
 {
     int depth = FindHeight(root);
     int max = 0, current;
@@ -314,7 +320,7 @@ int FindWidth(Tree *root)
     return max;
 }
 
-void FreeTree(Tree *root)
+void FreeTree(Tree* root)
 {
     if (root) {
         FreeTree(root->left);
@@ -323,7 +329,7 @@ void FreeTree(Tree *root)
     }
 }
 
-void SetSpaceByLevel(Tree *root, int level, int depth)
+void SetSpaceByLevel(Tree* root, int level, int depth)
 {
     if (root == NULL)
         return;
@@ -338,23 +344,24 @@ void SetSpaceByLevel(Tree *root, int level, int depth)
     SetSpaceByLevel(root->right, level + 1, depth);
 }
 
-void LoopEachLevel(Tree *root)
+void LoopEachLevel(Tree* root)
 {
     int height = FindHeight(root);
     SetSpaceByLevel(root, 0, height);
 }
 
-void PrettyPrint(Tree *root)
+void PrettyPrint(Tree* root)
 {
     int i;
     if (root) {
         PrettyPrint(root->left);
-        for (i=0; i < root->space_cnt; i++)
+        for (i = 0; i < root->space_cnt; i++)
             printf(" ");
         if (root->space_cnt == 0) {
             printf("{ROOT} ");
             printf("[%d]\n", root->data);
-        } else {
+        }
+        else {
             printf(" ---[");
             printf("%d\n", root->data);
         }
