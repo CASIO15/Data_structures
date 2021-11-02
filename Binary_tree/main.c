@@ -1,10 +1,11 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include "tree.h"
 
 #ifdef WIN32
-    #define CLEAR "cls"
+#define CLEAR "cls"
 #elif
-    #define CLEAR "clear"
+#define CLEAR "clear"
 #endif
 
 void PrintMenu();
@@ -24,12 +25,13 @@ void PrintMenu()
            "9.Print the min key.\n"
            "10.Print tree width.\n"
            "11.Pretty print the tree.\n"
-           "12.Exit.\n");
+           "12.Delete node.\n"
+           "13.Exit.\n");
 }
 
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
-    Tree *root = NULL;
+    Tree* root = NULL;
     int root_data = 0;
     int user_choice;
     int exit_loop = 0;
@@ -42,19 +44,22 @@ int main(int argc, char **argv)
         if (scanf("%d", &root_data) == 1) {
             if (root_data == -1) {
                 root = NULL;
-            } else {
+            }
+            else {
                 root = init_node(root_data);
                 root = CreateTreeFromUserInput(root);
                 system(CLEAR);
             }
-        } else {
+        }
+        else {
             fprintf(stderr, "Error ! Invalid input !\n");
             exit_loop = 1;
         }
-    } else {
+    }
+    else {
         // Creating tree based on the argv arguments passed.
         int i;
-        int *arr = NULL;
+        int* arr = NULL;
         int alloc_size = argc - 1;
 
         if ((arr = malloc(sizeof(int) * alloc_size)) == NULL) {
@@ -62,14 +67,14 @@ int main(int argc, char **argv)
             exit(EXIT_FAILURE);
         }
         for (i = 1; argv[i] != NULL; i++)
-            arr[i-1] = atoi(argv[i]);
+            arr[i - 1] = atoi(argv[i]);
 
-        root = CreateTree(root, arr, 0, i-1);
+        root = CreateTree(root, arr, 0, i - 1);
     }
 
     PrintMenu();
 
-    for (;exit_loop != 1;) {
+    for (; exit_loop != 1;) {
         printf("\nENTER YOUR CHOICE: ");
         if (scanf("%d", &user_choice) != 1) {
             fprintf(stderr, "Error ! Invalid choice\n");
@@ -117,7 +122,16 @@ int main(int argc, char **argv)
                 LoopEachLevel(root);
                 PrettyPrint(root);
                 break;
-            case 12:
+            case 12: {
+                int data;
+
+                printf("|__ Enter key to delete: ");
+                scanf("%d", &data);
+
+                root = delete(root, root, data);
+                break;
+            }
+            case 13:
                 exit_loop = 1;
                 FreeTree(root);
                 break;
