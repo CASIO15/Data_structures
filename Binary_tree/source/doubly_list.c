@@ -14,13 +14,13 @@ void insert_list(DList **list, t_node *node)
         temp = init_list();
         (*list)->blink = NULL;
         (*list)->flink = NULL;
-        (*list)->node = node;
+        (*list)->node = *node;
         temp = *list;
         return;
     }
 
     DList *new = init_list();
-    new->node = node;
+    new->node = *node;
     new->flink = NULL;
     temp->flink = new;
     new->blink = temp;
@@ -39,4 +39,36 @@ void free_list(DList **list)
     }
     free(list);
     list = NULL;
+}
+
+void print_list(DList *list)
+{
+    while (list != NULL) {
+        printf("%d ", list->node.data);
+        list = list->flink;
+    }
+    puts("");
+}
+
+void *ConvertTreeToDLL(Tree *root, DList **list)
+{
+    if (root != NULL) {
+        ConvertTreeToDLL(root->left, list);
+        insert_list(list, root);
+        ConvertTreeToDLL(root->right, list);
+    }
+    return NULL;
+}
+
+void print_list_reverse(DList *list)
+{
+    // Move list to the end
+    while (list->flink != NULL)
+        list = list->flink;
+
+    while (list != NULL) {
+        printf("%d ", list->node.data);
+        list = list->blink;
+    }
+    puts("");
 }
