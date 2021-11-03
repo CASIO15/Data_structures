@@ -27,10 +27,11 @@ void PrintMenu()
            "10.Print tree width.\n"
            "11.Pretty print the tree.\n"
            "12.Delete node.\n"
-           "13.Convert tree to DLL.\n"
-           "14.Print the DLL.\n"
-           "15.Print the DLL in reverse.\n"
-           "16.Exit.\n");
+           "13.Insert in first available place.\n"
+           "14.Convert tree to DLL.\n"
+           "15.Print the DLL.\n"
+           "16.Print the DLL in reverse.\n"
+           "17.Exit.\n");
 }
 
 int main(int argc, char** argv)
@@ -130,23 +131,35 @@ int main(int argc, char** argv)
                 break;
             case 12: {
                 int data;
-
                 printf("|__ Enter key to delete: ");
-                scanf("%d", &data);
-
+                if (scanf("%d", &data) != 1) {
+                    fprintf(stderr, "Error ! Invalid key.\n");
+                    exit(EXIT_FAILURE);
+                }
                 root = delete(root, root, data);
                 break;
             }
             case 13: {
+                int key;
+                printf("Enter the key you would like to insert:");
+                if (scanf("%d", &key) != 1) {
+                    fprintf(stderr, "Error ! Invalid key.\n");
+                    exit(EXIT_FAILURE);
+                }
+                insert(root, key);
+                break;
+            }
+            case 14: {
                 ConvertTreeToDLL(root, &list);
                 break;
-            } case 14:
+            }
+            case 15:
                 print_list(list);
                 break;
-            case 15:
+            case 16:
                 print_list_reverse(list);
                 break;
-            case 16:
+            case 17:
                 exit_loop = 1;
                 FreeTree(root);
                 break;
