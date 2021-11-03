@@ -1,11 +1,12 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include "tree.h"
+#include "Doubly_linked_list.h"
 
 #ifdef WIN32
-#define CLEAR "cls"
+    #define CLEAR "cls"
 #elif
-#define CLEAR "clear"
+    #define CLEAR "clear"
 #endif
 
 void PrintMenu();
@@ -26,12 +27,17 @@ void PrintMenu()
            "10.Print tree width.\n"
            "11.Pretty print the tree.\n"
            "12.Delete node.\n"
-           "13.Exit.\n");
+           "13.Convert tree to DLL.\n"
+           "14.Print the DLL.\n"
+           "15.Print the DLL in reverse.\n"
+           "16.Exit.\n");
 }
 
 int main(int argc, char** argv)
 {
+
     Tree* root = NULL;
+    DList *list = NULL;
     int root_data = 0;
     int user_choice;
     int exit_loop = 0;
@@ -131,7 +137,16 @@ int main(int argc, char** argv)
                 root = delete(root, root, data);
                 break;
             }
-            case 13:
+            case 13: {
+                ConvertTreeToDLL(root, &list);
+                break;
+            } case 14:
+                print_list(list);
+                break;
+            case 15:
+                print_list_reverse(list);
+                break;
+            case 16:
                 exit_loop = 1;
                 FreeTree(root);
                 break;
@@ -143,5 +158,6 @@ int main(int argc, char** argv)
         }
     }
 #undef CLEAR
+
     return 0;
 }
