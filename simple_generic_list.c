@@ -9,8 +9,12 @@
 #define TYPE_DOUBLE 3
 #define TYPE_CHAR 4
 
+#define INIT_PHY_SIZE 4
+#define INIT_LOG_SIZE 0
+
 #define allocList(cast, type, size) (cast *) malloc(sizeof(type) * (size));
 #define insertList(data, type) insert(&list, data, type);
+#define GROW_ARR(size) (size) * 2
 
 typedef struct list {
     void** list;
@@ -20,16 +24,16 @@ typedef struct list {
 } List;
 
 void print(List* list);
-void deleteList(List** list);
 List* initList();
 void* reallocate(void* data, int newSize);
 void insert(List** list, void* type, int keyType);
+void deleteList(List** list);
 
 List* initList()
 {
     List *list = allocList(List, List, 1);
-    list->phySize = 4;
-    list->logSize = 0;
+    list->phySize = INIT_PHY_SIZE;
+    list->logSize = INIT_LOG_SIZE;
 
     list->list = allocList(void, void *, list->phySize);
     list->typeMapping = allocList(int, int, list->phySize);
@@ -54,9 +58,9 @@ void insert(List** list, void* type, int keyType)
     int size = (*list)->logSize, phySize = (*list)->phySize;
 
     if (size + 1 >= phySize) {
-        (*list)->list = reallocate((void **) (*list)->list,phySize * 2);
-        (*list)->typeMapping = reallocate((void *) (*list)->typeMapping,phySize * 2);
-        (*list)->phySize *= 2;
+        (*list)->list = reallocate((void **) (*list)->list,GROW_ARR(phySize));
+        (*list)->typeMapping = reallocate((void *) (*list)->typeMapping,GROW_ARR(phySize));
+        (*list)->phySize = GROW_ARR(phySize);
     }
 
     (*list)->list[size] = (void *) type;
