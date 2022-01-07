@@ -80,10 +80,10 @@ void print(List* list)
                 printf("%d, ", *(int *) list->list[i]);
                 break;
             case TYPE_DOUBLE:
-                printf("%lf, ", *(double *) list->list[i]);
+                printf("%.3lf, ", *(double *) list->list[i]);
                 break;
             case TYPE_FLOAT:
-                printf("%f, ", *(float *) list->list[i]);
+                printf("%.3f, ", *(float *) list->list[i]);
                 break;
             case TYPE_CHAR:
                 printf("\'%c\', ", *(char *) list->list[i]);
@@ -118,7 +118,7 @@ int main()
 
     char* str = "Hello world !";
     int var1 = 1, var2 = 2;
-    float f1 = 1.001f;
+    float f1 = 1.3f;
     double d1 = 0.5133;
     char c1 = '$';
 
