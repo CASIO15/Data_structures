@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cassert>
+#include <initializer_list>
 
 using namespace std;
 
@@ -33,6 +34,14 @@ public:
     Trie()
     {
         t_node = nullptr;
+    }
+
+    Trie(initializer_list<string> lst)
+    {
+        t_node = nullptr;
+
+        for (auto word: lst)
+            insert(word);
     }
 
     void insert(string& data);
@@ -128,10 +137,8 @@ void Trie::dispatchRemove(node* node, string& key)
     for (auto& ch : key) {
         offset = Trie::letterOffset(ch);
 
-        if (crawler->children[offset] != nullptr) {
+        if (crawler->children[offset] != nullptr)
             crawler = crawler->children[offset];
-            delete crawler->children[offset];
-        }
     }
 
     crawler->isEndOfWord = false;
@@ -159,6 +166,8 @@ void Trie::deleteAll(node* node)
 
 Trie::~Trie()
 {
+    assert(t_node != nullptr);
+
     this->deleteAll(t_node);
 
     delete t_node;
@@ -169,10 +178,7 @@ int main()
 {
 
     string CppLangKeywords[] = { "int", "char", "void", "main", "return", "struct", "class", "using", "namespace", "namespaces" };
-    Trie trie;
-
-    for (auto& word : CppLangKeywords)
-        trie.insert(word);
+    Trie trie({ "int", "char", "void", "main", "return", "struct", "class", "using", "namespace", "namespaces" });
 
     trie.dump();
 
@@ -183,6 +189,7 @@ int main()
     cout << trie.search(CppLangKeywords[7]) << endl;
 
     trie.dump();
+
 
     return 0;
 }
