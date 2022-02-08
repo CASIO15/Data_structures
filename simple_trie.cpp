@@ -26,7 +26,7 @@ private:
     static void dispatchRemove(node* node, string& key);
     static inline int letterOffset(char ch);
     static void dispatchDisplayTrie(node* node, string res = "", int offset = 0);
-    static void deleteAll(node* node, int offset = 0);
+    static void deleteAll(node* node);
 
 public:
 
@@ -142,15 +142,15 @@ void Trie::remove(string& key)
     this->dispatchRemove(this->t_node, key);
 }
 
-void Trie::deleteAll(node* node, int offset)
+void Trie::deleteAll(node* node)
 {
-    if (node->isEndOfWord) {
+    if (!node) {
         return;
     }
 
     for (int i = 0; i < ascii_range; i++) {
         if (node->children[i]) {
-            Trie::deleteAll(node->children[i], offset + 1);
+            Trie::deleteAll(node->children[i]);
             delete node->children[i];
             node->children[i] = nullptr;
         }
@@ -160,9 +160,10 @@ void Trie::deleteAll(node* node, int offset)
 Trie::~Trie()
 {
     this->deleteAll(t_node);
+
+    delete t_node;
     this->t_node = nullptr;
 }
-
 
 int main()
 {
