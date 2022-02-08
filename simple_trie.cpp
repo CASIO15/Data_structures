@@ -50,17 +50,17 @@ void Trie::dispatchInsert(node** node, string& data)
     if (*node == nullptr)
         *node = new Trie::node();
 
-    Trie::node* pCrawl = *node;
+    Trie::node* crawler = *node;
 
     for (auto& ch : data) {
         int offset = Trie::letterOffset(ch);
 
-        if (!pCrawl->children[offset])
-            pCrawl->children[offset] = new Trie::node;
-        pCrawl = pCrawl->children[offset];
+        if (!crawler->children[offset])
+            crawler->children[offset] = new Trie::node;
+        crawler = crawler->children[offset];
     }
 
-    pCrawl->isEndOfWord = true;
+    crawler->isEndOfWord = true;
 }
 
 void Trie::insert(string& data)
