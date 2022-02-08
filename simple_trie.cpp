@@ -26,6 +26,7 @@ private:
     static void dispatchRemove(node* node, string& key);
     static inline int letterOffset(char ch);
     static void dispatchDisplayTrie(node* node, string res = "", int offset = 0);
+    static void deleteAll(node* node, int offset = 0);
 
 public:
 
@@ -38,6 +39,7 @@ public:
     bool search(string& key);
     void dump();
     void remove(string& key);
+    ~Trie();
 };
 
 int Trie::letterOffset(char ch)
@@ -130,8 +132,8 @@ void Trie::dispatchRemove(node* node, string& key)
             crawler = crawler->children[offset];
             delete crawler->children[offset];
         }
-
     }
+
     crawler->isEndOfWord = false;
 }
 
@@ -140,6 +142,26 @@ void Trie::remove(string& key)
     this->dispatchRemove(this->t_node, key);
 }
 
+void Trie::deleteAll(node* node, int offset)
+{
+    if (node->isEndOfWord) {
+        return;
+    }
+
+    for (int i = 0; i < ascii_range; i++) {
+        if (node->children[i]) {
+            Trie::deleteAll(node->children[i], offset + 1);
+            delete node->children[i];
+            node->children[i] = nullptr;
+        }
+    }
+}
+
+Trie::~Trie()
+{
+    this->deleteAll(t_node);
+    this->t_node = nullptr;
+}
 
 
 int main()
@@ -155,8 +177,9 @@ int main()
 
     cout << "\n\n";
 
-    trie.remove(CppLangKeywords[9]);
-    cout << trie.search(CppLangKeywords[9]) << endl;
+    cout << "Removing \'" << CppLangKeywords[7] << "\' from trie\n";
+    trie.remove(CppLangKeywords[7]);
+    cout << trie.search(CppLangKeywords[7]) << endl;
 
     trie.dump();
 
