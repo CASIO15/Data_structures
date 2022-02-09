@@ -94,9 +94,7 @@ bool Trie::searchWord(node* node, string& key)
             return false;
     }
 
-    if (crawler->isEndOfWord)
-        return true;
-    return false;
+    return crawler->isEndOfWord;
 }
 
 bool Trie::search(string& key)
