@@ -69,18 +69,6 @@ void insertToTail(List* lst, ListNode* node)
     }
 }
 
-void insertToHead(List* lst, ListNode* node)
-{
-    if (isEmptyList(*lst)) {
-        lst->tail = lst->head = node;
-    } else {
-        lst->head->prev = node;
-        node->next = lst->head;
-        lst->head = node;
-        node->prev = NULL;
-    }
-}
-
 void removeNode(List* lst, ListNode* node)
 {
     if (lst->head == node && lst->tail == node)
